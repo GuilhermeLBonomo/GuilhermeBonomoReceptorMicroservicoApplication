@@ -4,11 +4,13 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import jakarta.annotation.PostConstruct;
 
-@Component
+@Configuration
 public class MQConfig {
     @Autowired
     private AmqpAdmin amqpAdmin;
@@ -22,6 +24,9 @@ public class MQConfig {
         return new DirectExchange("restaurante");
     }
 
+    @Bean
+    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
+        return new Jackson2JsonMessageConverter();}
     @PostConstruct
     private void Create (){
         this.queue = new Queue("fila-restaurante");

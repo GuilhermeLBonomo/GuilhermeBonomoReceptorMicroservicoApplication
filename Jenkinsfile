@@ -1,24 +1,23 @@
 pipeline {
     agent any
-    environment {
-    }
+
     stages {
-        stage('Verificar Repositorio') {
+
+        stage('Verificar Repositório') {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']],
-                          userRemoteConfigs: [
-                                [
-                                    url: 'https://github.com/GuilhermeLBonomo/GuilhermeBonomoEmissorMicroservicoApplication.git',
-                                    credentialsId: 'guilhermelbonomo']]])
+                          userRemoteConfigs: [[url: 'https://github.com/GuilhermeLBonomo/GuilhermeBonomoReceptorMicroservicoApplication.git']]])
             }
         }
+
+
 
         stage('Construir Imagem Docker') {
             steps {
                 script {
-                    def appName = 'av1'
+                    def appName = 'clientereceptor'
                     def imageTag = "${appName}:${env.BUILD_ID}"
-                    bat "docker build --build-arg SPRING_PROFILES_ACTIVE=${DEPLOY_PROFILE} -t ${imageTag} ."
+                    bat "docker build -t ${imageTag} ."
                 }
             }
         }
@@ -26,8 +25,10 @@ pipeline {
         stage('Fazer Deploy') {
             steps {
                 script {
-                    def appName = 'av1'
+                    def appName = 'clientereceptor'
                     def imageTag = "${appName}:${env.BUILD_ID}"
+                    bat "docker stop ${appName} || exit 0"
+                    bat "docker rm ${appName} || exit 0"
                     bat "docker-compose up -d --build"
                 }
             }
