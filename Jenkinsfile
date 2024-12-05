@@ -34,7 +34,15 @@ pipeline {
             }
         }
     }
-
+    stage('Análise SonarQube') {
+                steps {
+                    script {
+                        withSonarQubeEnv('SonarQubeServer') {  // 'SonarQubeServer' é o nome da instância configurada no Jenkins
+                            bat 'mvn clean verify sonar:sonar -Dsonar.projectKey=GuilhermeBonomoReceptorMicroservicoApplication -Dsonar.projectName=GuilhermeBonomoReceptorMicroservicoApplication -Dsonar.token=squ_b76b715aabb86953255617b90ab021f3ab23bd7d'
+                        }
+                    }
+                }
+            }
     post {
         success {
             echo 'Deploy realizado com sucesso!'
