@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     ports:
-      - "3306:3306"
+      - "3336:3336"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "no"
       MYSQL_ROOT_PASSWORD: example

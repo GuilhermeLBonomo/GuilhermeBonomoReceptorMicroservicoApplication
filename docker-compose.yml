@@ -8,7 +8,7 @@ services:
     ports:
       - "8082:8082"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/restaurante?useTimezone=true&serverTimezone=America/Sao_Paulo
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3336/restaurante?useTimezone=true&serverTimezone=America/Sao_Paulo
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: example
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
