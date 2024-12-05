@@ -18,7 +18,7 @@ pipeline {
                                 }
                             }
         }
-        
+
         stage('Análise SonarQube') {
                         steps {
                             script {
@@ -27,8 +27,7 @@ pipeline {
                                 }
                             }
                         }
-                    }
-            }
+        }
 
 
         stage('Construir Imagem Docker') {
