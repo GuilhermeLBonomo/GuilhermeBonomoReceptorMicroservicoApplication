@@ -10,6 +10,7 @@ public class GuilhermeBonomoReceptorMicroservicoApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GuilhermeBonomoReceptorMicroservicoApplication.class, args);
+		System.out.println("Roadando Receptor");
 	}
 
 }

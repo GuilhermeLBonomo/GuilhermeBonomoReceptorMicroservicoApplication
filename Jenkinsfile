@@ -15,7 +15,7 @@ pipeline {
         stage('Construir Imagem Docker') {
             steps {
                 script {
-                    def appName = 'clientereceptor'
+                    def appName = 'provajhonny2'
                     def imageTag = "${appName}:${env.BUILD_ID}"
                     bat "docker build -t ${imageTag} ."
                 }
@@ -25,7 +25,7 @@ pipeline {
         stage('Fazer Deploy') {
             steps {
                 script {
-                    def appName = 'clientereceptor'
+                    def appName = 'provajhonny2'
                     def imageTag = "${appName}:${env.BUILD_ID}"
                     bat "docker stop ${appName} || exit 0"
                     bat "docker rm ${appName} || exit 0"

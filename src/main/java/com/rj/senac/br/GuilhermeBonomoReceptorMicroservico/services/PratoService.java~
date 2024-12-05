@@ -2,7 +2,6 @@ package com.rj.senac.br.GuilhermeBonomoReceptorMicroservico.services;
 
 import com.rj.senac.br.GuilhermeBonomoReceptorMicroservico.entities.Prato;
 import com.rj.senac.br.GuilhermeBonomoReceptorMicroservico.repositories.PratoRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,25 +1,19 @@
 package com.rj.senac.br.GuilhermeBonomoReceptorMicroservico.configuration;
 
-import org.springframework.amqp.core.AmqpAdmin;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import jakarta.annotation.PostConstruct;
 
 @Configuration
 public class MQConfig {
-    @Autowired
-    private AmqpAdmin amqpAdmin;
-    private Queue queue;
+
     @Bean
     public Jackson2JsonMessageConverter messageConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
     @Bean
     public CachingConnectionFactory connectionFactory() {
         CachingConnectionFactory factory = new CachingConnectionFactory("localhost");
@@ -27,27 +21,67 @@ public class MQConfig {
         factory.setPassword("admin123");
         return factory;
     }
-    private Queue queue (String queueName){
-        return new Queue(queueName, true, false, false);
-    }
 
-    private DirectExchange createDirectExchange(){
-        return new DirectExchange("restaurante");
+    // Exchanges
+    @Bean
+    public DirectExchange pratosRestauranteExchange() {
+        return ExchangeBuilder.directExchange("pratos-restaurante-request-exchange")
+                .durable(true)
+                .build();
     }
 
     @Bean
-    public Jackson2JsonMessageConverter producerJackson2MessageConverter() {
-        return new Jackson2JsonMessageConverter();}
-    @PostConstruct
-    private void Create (){
-        this.queue = new Queue("fila-restaurante");
-
-        DirectExchange directExchange = createDirectExchange();
-        Binding binding = new Binding(queue.getName(), Binding.DestinationType.QUEUE, directExchange.getName(), queue.getName(), null);
-
-        amqpAdmin.declareQueue(queue);
-        amqpAdmin.declareExchange(directExchange);
-        amqpAdmin.declareBinding(binding);
+    public DirectExchange pratosRestauranteResponseErroExchange() {
+        return ExchangeBuilder.directExchange("pratos-restaurante-response-erro-exchange")
+                .durable(true)
+                .build();
     }
 
+    @Bean
+    public DirectExchange pratosRestauranteResponseSucessoExchange() {
+        return ExchangeBuilder.directExchange("pratos-restaurante-response-sucesso-exchange")
+                .durable(true)
+                .build();
+    }
+
+    // Queues
+    @Bean
+    public Queue pratosRestauranteRequestQueue() {
+        return new Queue("pratos-restaurante-request-queue", true);
+    }
+
+    @Bean
+    public Queue pratosRestauranteResponseErroQueue() {
+        return new Queue("pratos-restaurante-response-erro-queue", true);
+    }
+
+    @Bean
+    public Queue pratosRestauranteResponseSucessoQueue() {
+        return new Queue("pratos-restaurante-response-sucesso-queue", true);
+    }
+
+    // Bindings
+    @Bean
+    public Binding pratosRestauranteRequestBinding(DirectExchange pratosRestauranteExchange, Queue pratosRestauranteRequestQueue) {
+        return BindingBuilder.bind(pratosRestauranteRequestQueue)
+                .to(pratosRestauranteExchange)
+                .with("pratos-restaurante-request-rout-key");
+    }
+
+    @Bean
+    public Binding pratosRestauranteResponseErroBinding(DirectExchange pratosRestauranteResponseErroExchange, Queue pratosRestauranteResponseErroQueue) {
+        return BindingBuilder.bind(pratosRestauranteResponseErroQueue)
+                .to(pratosRestauranteResponseErroExchange)
+                .with("pratos-restaurante-response-erro-rout-key");
+    }
+
+    @Bean
+    public Binding pratosRestauranteResponseSucessoBinding(DirectExchange pratosRestauranteResponseSucessoExchange, Queue pratosRestauranteResponseSucessoQueue) {
+        return BindingBuilder.bind(pratosRestauranteResponseSucessoQueue)
+                .to(pratosRestauranteResponseSucessoExchange)
+                .with("pratos-restaurante-response-sucesso-rout-key");
+    }
+
+
 }
+
