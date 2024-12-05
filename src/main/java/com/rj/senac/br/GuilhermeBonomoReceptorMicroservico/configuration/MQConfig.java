@@ -1,4 +1,4 @@
-package com.rj.senac.br.GuilhermeBonomoEmissorMicroservico.configuration;
+package com.rj.senac.br.GuilhermeBonomoReceptorMicroservico.configuration;
 
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
