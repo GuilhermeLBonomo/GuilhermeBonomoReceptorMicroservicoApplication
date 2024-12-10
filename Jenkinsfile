@@ -33,9 +33,10 @@ pipeline {
         stage('Análise SonarQube') {
             steps {
                 script {
-                    echo "Uga"
-                    sleep 16
-                    echo "Uga uga"
+                     withSonarQubeEnv('SonarQubeServer') {
+                                            bat 'mvn clean verify sonar:sonar -Dsonar.projectKey=receptor -Dsonar.projectName=receptor'
+'
+                     }
                 }
             }
         }
