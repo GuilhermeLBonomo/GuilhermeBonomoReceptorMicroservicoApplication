@@ -35,7 +35,6 @@ pipeline {
                 script {
                      withSonarQubeEnv('SonarQubeServer') {
                                             bat 'mvn clean verify sonar:sonar -Dsonar.projectKey=receptor -Dsonar.projectName=receptor'
-'
                      }
                 }
             }
